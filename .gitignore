@@ -1,0 +1,9 @@
+data
+wandb
+wandb_token.txt
+__pycache__
+utils/__pycache__
+clicker.py
+test_ws.ipynb
+animation.gif
+.DS_Store
