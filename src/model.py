@@ -60,10 +60,10 @@ class ControlVAE(nn.Module):
         self.w_mask = torch.nn.Parameter(
             torch.randn(self.num_prop, self.latent_dim_w, 2))
 
-        self.z_mean_avg = nn.Parameter(torch.zeros(1), requires_grad=False)
-        self.z_std_avg = nn.Parameter(torch.zeros(1), requires_grad=False)
-        self.w_mean_avg = nn.Parameter(torch.zeros(1), requires_grad=False)
-        self.w_std_avg = nn.Parameter(torch.zeros(1), requires_grad=False)
+        self.z_mean_avg = nn.Parameter(torch.zeros(1, 8), requires_grad=False)
+        self.z_std_avg = nn.Parameter(torch.zeros(1, 8), requires_grad=False)
+        self.w_mean_avg = nn.Parameter(torch.zeros(1, 8), requires_grad=False)
+        self.w_std_avg = nn.Parameter(torch.zeros(1, 8), requires_grad=False)
         self.alpha = moving_alpha
 
     def forward(self, x, tau, mask=None):
@@ -96,10 +96,10 @@ class ControlVAE(nn.Module):
         w_std = w.std(axis=0)
 
         with torch.no_grad():
-            self.z_mean_avg = self.alpha * z_mean + (1 - self.alpha) * self.z_mean_avg
-            self.z_std_avg = self.alpha * z_std + (1 - self.alpha) * self.z_std_avg
-            self.w_mean_avg = self.alpha * w_mean + (1 - self.alpha) * self.w_mean_avg
-            self.w_std_avg = self.alpha * w_std + (1 - self.alpha) * self.w_std_avg
+            self.z_mean_avg.data = self.alpha * z_mean + (1 - self.alpha) * self.z_mean_avg.data
+            self.z_std_avg.data = self.alpha * z_std + (1 - self.alpha) * self.z_std_avg.data
+            self.w_mean_avg.data = self.alpha * w_mean + (1 - self.alpha) * self.w_mean_avg.data
+            self.w_std_avg.data = self.alpha * w_std + (1 - self.alpha) * self.w_std_avg.data
 
         return (
             reconstruct, y_reconstruct, z, w, z_, w_, mask
