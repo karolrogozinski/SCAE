@@ -60,12 +60,11 @@ class ControlVAE(nn.Module):
         self.w_mask = torch.nn.Parameter(
             torch.randn(self.num_prop, self.latent_dim_w, 2))
 
-        self.register_buffer('z_mean_avg', torch.zeros(1, latent_dim))
-        self.register_buffer('z_std_avg', torch.zeros(1, latent_dim))
-        self.register_buffer('w_mean_avg', torch.zeros(1, latent_dim_prop))
-        self.register_buffer('w_std_avg', torch.zeros(1, latent_dim_prop))
+        self.z_mean_avg = nn.Parameter(torch.zeros(1), requires_grad=False)
+        self.z_std_avg = nn.Parameter(torch.zeros(1), requires_grad=False)
+        self.w_mean_avg = nn.Parameter(torch.zeros(1), requires_grad=False)
+        self.w_std_avg = nn.Parameter(torch.zeros(1), requires_grad=False)
         self.alpha = moving_alpha
-
 
     def forward(self, x, tau, mask=None):
         """
